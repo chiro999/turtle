@@ -10,7 +10,7 @@ ssize_t str_write(char *str)
 {
 	ssize_t count, out_count;
 
-	count = _strlen(s);
+	count = _strlen(str);
 	out_count = write(STDOUT_FILENO, str, count);
 	if (out_count != count)
 	{
