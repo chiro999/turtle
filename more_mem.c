@@ -18,6 +18,7 @@ char **(char **ptr, size_t *size)
 		free(ptr);
 		return (NULL);
 	}
+	/* copy elements of old array into new array */
 	while (i < (*size))
 	{
 		new[i] = ptr[i];
