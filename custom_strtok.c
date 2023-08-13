@@ -71,7 +71,7 @@ char *_strtok(char *str, const char *delim)
         next[i] = '\0';
 
         /* Update 'next' to point to the character after the delimiter */
-        next = next + i + 1;
+        next += i + 1;
 
         /* If the next character is the end of the string, set 'next' to NULL */
         if (*next == '\0')
