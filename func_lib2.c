@@ -1,12 +1,12 @@
 #include "shell.h"
 
 /**
- * str_write - writes a string to standard output
+ * str_out - writes a string to standard output
  * @str: string to write
  *
  * Return: number of chars printed or -1 on failure
  */
-ssize_t str_write(char *str)
+ssize_t str_out(char *str)
 {
 	ssize_t count, out_count;
 
@@ -39,3 +39,24 @@ int _strlen(char *s)
 
 	return (x);
 }
+
+/**
+ * str_err - prints a string to standard error
+ * @str: string to print
+ *
+ * Return: void
+ */
+void str_error(char *str)
+{
+	ssize_t count, err_count;
+
+	count = _strlen(str);
+	err_count = write(STDERR_FILENO, str, count);
+	if (err_count != count)
+	{
+		perror("Fatal Error");
+		exit(1);
+	}
+
+}
+
