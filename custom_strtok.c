@@ -20,7 +20,7 @@ unsigned int is_a_match(char c, const char *str)
 	return (0);
 }
 
-char *_strtok(char *str, const char *delim)
+char *custom_strtok(char *str, const char *delim)
 {
     static char *token;
     static char *next_token;
