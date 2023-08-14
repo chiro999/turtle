@@ -7,7 +7,7 @@
  *
  * Returns: An array of pointers to the tokens
  */
-char **CustomTokenizer(char *inputBuffer, char *delimiter)
+char **custom_tokenizer(char *inputBuffer, char *delimiter)
 {
     char **tokenArray = NULL;  /* Array of pointers to hold tokens */
     size_t index = 0, tokenCount = 10;  /* Index and initial token count */
