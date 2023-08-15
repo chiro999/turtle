@@ -28,3 +28,23 @@ char **is_env(char **env_var, char *path)
 
     return (NULL); /* Return NULL if no match is found */
 }
+
+/**
+ * env_free - free the shell's environment
+ * @env: shell's environment
+ *
+ * Return: void
+ */
+void env_free(char **env)
+{
+    unsigned int i = 0;
+
+    /* Iterate through the environment variables and free each one */
+    while (env[i])
+    {
+        free(env[i]); /* Free the memory allocated for the current environment variable */
+        i++; // Move to the next environment variable
+    }
+
+    free(env); /* Free the memory allocated for the array of environment variables */
+}
