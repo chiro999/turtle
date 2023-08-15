@@ -2,33 +2,36 @@
 
 /**
  * _error - prints error messages to standard error
- * @inputs: pointer to struct of variables
- * @message: message to print
+ * @input_variables: pointer to struct of variables
+ * @err_message: message to print
  *
  * Return: void
  */
-void print_error(input_variables *inputs, char *err_message)
+void print_error(input_variables *input_variables, char *err_message)
 {
-	char *_argc;
+    char *_argc;
 
-	/* Print program name */
-	str_error(inputs->argv[0]);
-	str_error(": ");
+    /* Print program name */
+    str_error(input_variables->argv[0]);
+    str_error(": ");
 
-	/* Convert and print command count */
-	_argc = _int_str(inputs->count);
-	str_error(_argc);
-	free(_argc);
-	str_error(": ");
+    /* Convert and print command count */
+    _argc = _int_str(input_variables->count);
+    str_error(_argc);
+    free(_argc);
+    str_error(": ");
 
-	/* Print command name */
-	str_error(inputs->tokens[0]);
+    /* Print command name */
+    str_error(input_variables->tokens[0]);
 
-	/* Print custom error message or system error message */
-	if (err_message)
-	{
-		str_error(err_message);
-	}
-	else
-		perror("");
+    /* Print custom error message or system error message */
+    do {
+        if (err_message) {
+            str_error(err_message);
+            break;
+        } else {
+            perror("");
+            break;
+        }
+    } while (0);
 }
