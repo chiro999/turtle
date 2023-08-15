@@ -58,6 +58,40 @@ int _execute(char *command, input_t *input_variables)
 }
 
 /**
+ * str_path - finds the PATH variable
+ * @env_arr: array of environment variables
+ *
+ * Return: pointer to the node that contains the PATH, or NULL on failure
+ */
+char *str_path(char **env_arr)
+{
+    /* The string we're looking for to identify the PATH variable */
+    char *path_str = "PATH=";
+    unsigned int x = 0, y;
+
+    /* Loop through each element in the env_arr array using a while loop */
+    while (env_arr[x] != NULL)
+    {
+        y = 0; /* Initialize y for the inner loop */
+
+        /* Compare the characters of the path_str string and the current environment variable using a while loop */
+        while (y < 5 && path_str[y] == env_arr[x][y])
+        {
+            y++; /* Move to the next character */
+        }
+
+        /* If the loop completed without breaking and y is 5, the first 5 characters match "PATH=" */
+        if (y == 5)
+            break; /* Break out of the outer loop as well */
+
+        x++; /* Move to the next environment variable */
+    }
+
+    /* Return the environment variable where "PATH" was found */
+    return (env_arr[x]);
+}
+
+/**
  * is_PATH - checks if the command is a part of a path
  * @is_PATH: name of the command
  *
