@@ -158,6 +158,78 @@ int exec_curr_dir(input_t *input_variables)
     return 0;
 }
 
+/* 
+ * check_path - Execute command via PATH
+ * @inputs: Input structure with tokens, env vars, and status
+ *
+ * Searches command using PATH. Checks current dir, then PATH dirs. Executes if found,
+ * sets status if not.
+ */
+void check_path(input_t *inputs)
+{
+    char *path, *clone = NULL, *check = NULL;
+    unsigned int i = 0;
+    int exec_success = 0; /* Indicates whether the command execution was successful */
+    char **path_tokens;
+
+    /* Check if the command is in the current working directory */
+    if (is_PATH(inputs->tokens[0]))
+        exec_success = exec_curr_dir(inputs);
+    else
+    {
+        /* Find the PATH environment variable */
+        path = str_path(inputs->env);
+
+        if (path != NULL)
+        {
+            /* Duplicate and tokenize the PATH for searching */
+            clone = _strdup(path + 5);
+            path_tokens = custom_tokenizer(clone, ":");
+
+            /* Loop through directories to find and execute the command using while loops */
+            i = 0;
+            while (path_tokens && path_tokens[i])
+            {
+                check = _strcat(path_tokens[i], inputs->tokens[0]);
+
+                /* Check if the executable exists in the directory */
+                int exists = access(check, F_OK);
+                if (exists == 0)
+                {
+                    exec_success = _execute(check, inputs);
+                    free(check);
+                    break;
+                }
+
+                free(check);
+                i++;
+            }
+
+            /* Clean up allocated memory */
+            free(clone);
+            if (path_tokens == NULL)
+            {
+                inputs->status = 127;
+                _exit_(inputs);
+            }
+        }
+
+        /* If executable not found in any directory */
+        if (path == NULL || path_tokens[i] == NULL)
+        {
+            _error(inputs, ": not found\n");
+            inputs->status = 127;
+        }
+
+        /* Clean up allocated memory */
+        free(path_tokens);
+    }
+
+    /* If execution is successful, exit the program */
+    if (exec_success == 1)
+        _exit_(inputs);
+}
+
 /**
  * is_PATH - checks if the command is a part of a path
  * @is_PATH: name of the command
