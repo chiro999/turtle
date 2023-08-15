@@ -91,6 +91,73 @@ char *str_path(char **env_arr)
     return (env_arr[x]);
 }
 
+/*
+ * exec_curr_dir - Execute a command from the current working directory
+ * @input_variables: Input structure containing command tokens and environment variables
+ *
+ * This function checks if the specified command exists in the current working directory.
+ * If the command exists and is executable, a child process is forked to execute it using execve.
+ * The parent process waits for the child to finish and handles the exit status accordingly.
+ * If the command is not found or cannot be executed, error messages are displayed and
+ * the status in the input structure is set appropriately.
+ *
+ * Return: 0 if the function completes successfully, 1 if there's an error
+ */
+int exec_curr_dir(input_t *input_variables)
+{
+    pid_t child_process;
+
+    /* Check if the command file exists in the current working directory */
+    if (access(input_variables->tokens[0], F_OK) == 0)
+    {
+        /* Check if the command file is executable */
+        if (access(input_variables->tokens[0], X_OK) == 0)
+        {
+            /* Fork a child process to execute the command */
+            child_process = fork();
+
+            if (child_process == -1)
+                _error(input_variables, NULL); /* Handle error */
+
+            if (child_process == 0) /* Child process */
+            {
+                /* Execute the command using execve */
+                if (execve(input_variables->tokens[0], input_variables->tokens, input_variables->env) == -1)
+                    _error(input_variables, NULL); /* Handle error */
+            }
+            else /* Parent process */
+            {
+                /* Wait for the child process to finish */
+                wait(&input_variables->status);
+
+                /* Check exit status of the child process */
+                if (WIFEXITED(input_variables->status))
+                    input_variables->status = WEXITSTATUS(input_variables->status);
+                else if (WIFSIGNALED(input_variables->status) && WTERMSIG(input_variables->status) == SIGINT)
+                    input_variables->status = 130;
+
+                return 0; /* Exit the function */
+            }
+
+            /* If execve or fork failed, set the status and return */
+            input_variables->status = 127;
+            return 1;
+        }
+        else
+        {
+            _error(input_variables, ": Permission denied\n");
+            input_variables->status = 126;
+        }
+
+        return 0;
+    }
+
+    /* If the command is not found, set the status and return */
+    _error(input_variables, ": not found\n");
+    input_variables->status = 127;
+    return 0;
+}
+
 /**
  * is_PATH - checks if the command is a part of a path
  * @is_PATH: name of the command
