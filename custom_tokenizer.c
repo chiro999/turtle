@@ -32,7 +32,7 @@ char **custom_tokenizer(char *inputBuffer, char *delimiter)
         if (index == tokenCount)
         {
             /* Resize the token array using a custom resizing function */
-            tokenArray = CustomRealloc(tokenArray, &tokenCount);
+            tokenArray = more_mem(tokenArray, &tokenCount);
             if (tokenArray == NULL)
             {
                 perror("Fatal Error");
