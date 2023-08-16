@@ -88,3 +88,58 @@ char **env_copy(char **environ)
 
     return copy;  /* Return a pointer to the newly created environment array */
 }
+
+/**
+ * new_env - create a new environment variable string
+ * @name: variable name
+ * @value: variable value
+ *
+ * Return: pointer to the new string;
+ */
+char *new_env(char *name, char *value)
+{
+    unsigned int name_len, value_len, i, j;
+    char *new_env;
+    unsigned int combined_length;  /* Combined length of name, value, '=', separator, and null terminator */
+    char separator = '=';  /* The separator character */
+
+    /* Calculate the lengths of the name and value strings */
+    name_len = _strlen(name);
+    value_len = _strlen(value);
+
+    /* Calculate the combined length of the new environment variable string */
+    /* +2 is added for the separator and null terminator */
+    combined_length = name_len + value_len + 2;  /* +2 because of separator and null character */
+
+    /* Allocate memory for the new environment variable string */
+    new_env = malloc(sizeof(char) * combined_length);
+    if (!new_env)  /* Using if (!new_env) instead of if (new == NULL) */
+        return (NULL);
+
+    /* Copy the characters from the name string to the new string using a while loop */
+    i = 0;  /* Initialize the counter */
+    while (name[i] != '\0')
+    {
+        new_env[i] = name[i];
+        i++;
+    }
+
+    /* Set the separator character between name and value */
+    new_env[i] = separator;
+
+    /* Increment i to position after the separator */
+    i++;
+
+    /* Copy the characters from the value string to the new string using a while loop */
+    j = 0;  /* Initialize the counter */
+    while (value[j] != '\0')
+    {
+        new_env[i + j] = value[j];
+        j++;
+    }
+
+    /* Add the null terminator to the new string */
+    new_env[i + j] = '\0';
+
+    return (new_env);  /* Return a pointer to the new environment variable string */
+}
