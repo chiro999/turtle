@@ -143,3 +143,59 @@ char *new_env(char *name, char *value)
 
     return (new_env);  /* Return a pointer to the new environment variable string */
 }
+
+/**
+ * env_plus - create a new environment variable
+ * @input_variables: pointer to struct of variables
+ *
+ * Return: void
+ */
+void env_plus(input_t *input_variables)
+{
+    unsigned int i = 0;
+    char **new_env;
+
+    /* Count the number of existing environment variables using a while loop */
+    while (input_variables->env[i] != NULL)
+        i++;
+
+    /* Calculate the total number of elements needed (variables + new variable + NULL terminator) */
+    unsigned int spec_elements = i + 2;
+
+    /* Allocate memory for a new environment array with space for the specified elements */
+    new_env = malloc(sizeof(char *) * spec_elements);
+    if (!new_env)
+    {
+        print_error(input_variables, NULL);
+        input_variables->status = 127;
+        _exit_(input_variables);
+    }
+
+    /* Copy existing environment variables to the new array using a while loop */
+    unsigned int j = 0;
+    while (j < i)
+    {
+        new_env[j] = input_variables->env[j];
+        j++;
+    }
+
+    /* Create a new environment variable and add it to the new array */
+    new_env[i] = add_value(input_variables->tokens[1], input_variables->tokens[2]);
+    if (!new_env[i])
+    {
+        print_error(input_variables, NULL);
+        free(input_variables->buffer);
+        free(input_variables->commands);
+        free(input_variables->tokens);
+        free_environ(input_variables->env);
+        free(new_env);
+        exit(127);
+    }
+
+    /* Set the last element of the new array to NULL to terminate the list */
+    new_env[spec_elements - 1] = NULL;
+
+    /* Free the old environment array and update it with the new array */
+    free(input_variables->env);
+    input_variables->env = new_env;
+}
