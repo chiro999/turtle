@@ -48,3 +48,43 @@ void env_free(char **env)
 
     free(env); /* Free the memory allocated for the array of environment variables */
 }
+
+/**
+ * env_copy - create a new environment array from the environment passed to main
+ * @environ: environment passed to main
+ *
+ * Return: pointer to the new environment
+ */
+char **env_copy(char **environ)
+{
+    char **copy = NULL;  /* Pointer to the new environment array */
+    size_t i = 0;        /* Counter for loops */
+    size_t len;          /* Length of the new environment array */
+
+    /* Count the number of elements in the existing environment array */
+    while (environ[i] != NULL)
+        i++;
+
+    len = i + 1;  /* Calculate the length of the new environment array */
+
+    /* Allocate memory for the new environment array */
+    copy = malloc(sizeof(char *) * len);
+    if (!copy)  /* Using if (!copy) instead of if (copy == NULL) */
+    {
+        perror("Error");  /* Change the error message */
+        exit(1);
+    }
+
+    /* Copy each string from the existing environment to the new environment */
+    i = 0;  /* Reset the counter for copying */
+    while (environ[i] != NULL)
+    {
+        copy[i] = _strdup(environ[i]);
+        i++;
+    }
+
+    /* Add a NULL pointer to mark the end of the new environment array */
+    copy[i] = NULL;
+
+    return copy;  /* Return a pointer to the newly created environment array */
+}
