@@ -129,35 +129,6 @@ void rm_env(input_t *input_vars)
 
 }
 
-
-
-void (*embedded(input_t *inputs))(input_t *inputs)
-{
-    unsigned int i = 0;
-
-    builtins_t is_embedded[] = {
-        {"setenv", create_edit_env}, // Swapped with line 11
-        {"exit", close},
-        {"env", curr_env},
-        {"unsetenv", _unsetenv},
-        {NULL, NULL}
-    };
-
-    while (is_embedded[i].f != NULL)
-    {
-        if (_strncmp(inputs->tokens[0], is_embedded[i].name) == 0)
-            break;
-        i++;
-    }
-
-    if (is_embedded[i].f != NULL)
-        is_embedded[i].f(inputs);
-
-    return (is_embedded[i].f);
-}
-
-#include "shell.h"
-
 /*
  * embedded - Checks if the command is a built-in and executes the corresponding function.
  * @inputs: Variables struct containing input data
