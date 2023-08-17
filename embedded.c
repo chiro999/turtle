@@ -67,3 +67,63 @@ void create_edit_env(input_t *input_vars)
 
     input_vars->status = 0; /* Set success status */
 }
+
+/**
+ * rm_env - remove an environment variable
+ * @input_vars: pointer to a struct of variables
+ *
+ * Return: void
+ */
+void rm_env(input_t *input_vars)
+{
+    char **env, **new;
+
+    unsigned int i, j;
+
+    /* Find the environment variable to unset */
+    env = find_env(input_vars->env, input_vars->tokens[1]);
+
+    if (!env)
+    {
+        _error(input_vars, ": No variable to unset");
+        return;
+    }
+
+    i = 0;
+    while (input_vars->env[i] != NULL)
+    {
+        i++;
+    }
+
+    /* Allocate memory for the new environment array */
+    new = malloc(sizeof(char *) * i);
+
+    if (!new)
+    {
+        _error(input_vars, NULL);
+        input_vars->status = 127;
+        _exit_(input_vars); // Assuming _exit_ is a custom function
+    }
+
+    /* Copy environment variables except the one to unset */
+    i = 0;
+    while (input_vars->env[i] != *env)
+    {
+        new[i] = input_vars->env[i];
+        i++;
+    }
+
+    j = i + 1;
+    while (input_vars->env[j] != NULL)
+    {
+        new[i] = input_vars->env[j];
+        i++;
+        j++;
+    }
+
+    new[i] = NULL;
+    free(*env);
+    free(input_vars->env);
+    input_vars->env = new;
+    input_vars->status = 0;
+}
