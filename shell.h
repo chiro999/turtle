@@ -17,29 +17,62 @@
  * @name: name of builtin command
  * @f: function for corresponding builtin
  */
-typedef struct builtins
+typedef struct embedded
 {
 	char *name;
 	void (*f)(input_t *);
-} builtins_t;
+} embedded_t
 
-ssize_t _puts(char *s);
-char *_strdup(char *duplicate);
+/* PATH functions */
+int _execute(char *command, input_t *input_variables);
+char *str_path(char **env_arr);
+exec_curr_dir(input_t *input_variables);
+void check_path(input_t *inputs);
+int is_PATH(char *name);
+
+/* close function */
+void close(input_t *input_variables);
+
+/* strtok functions */
+unsigned int is_a_match(char c, const char *str)
+char *custom_strtok(char *str, const char *delim)
+
+/* tokenizer function */
+char **custom_tokenizer(char *inputBuffer, char *delimiter)
+
+/* embedded functions */
+void curr_env(input_t *input_vars);
+void create_edit_env(input_t *input_vars);
+void rm_env(input_t *input_vars);
+void (*embedded(input_t *inputs))(input_t *inputs);
+
+/* environment function */
+char **is_env(char **env_var, char *path);
+void env_free(char **env);
+char **env_copy(char **environ);
+char *new_env(char *name, char *value);
+void env_plus(input_t *input_variables);
+
+/* stdlib replacements */
 char *_strcat(char *dest, char *src);
-unsigned int _strlen(char *s);
-
-char **_realloc(char **ptr, size_t *size);
-
-int _strncmp(char *s1, char *s2);
-
+int _strcmp(char *s1, char *s2);
 int _atoi(char *s);
 
-void _printer(char *str);
-char *_int_str(unsigned int count);
+ssize_t str_out(char *str);
+int _strlen(char *s);
+void str_error(char *str);
 
-/* _strtok & tokenize: _strtok.c & tokenizer.c */
-unsigned int matching(char c, const char *str);
-char *_strtok(char *str, const char *delim);
-char **tokenize(char *arguments, char *delimiter);
+char *_strdup(char *replica)
+char *int_to_string(unsigned int count)
+
+/* memory reallocation function */
+char **more_mem(char **ptr, size_t *size);
+
+/*print error function*/
+void print_error(input_variables *input_variables, char *err_message);
+
+/* main function yet to be added */
+void sig_handler(int sig_handler);
+int main(int argc, char **argv, char **environment);
 
 #endif /* _SHELL_H_ */
