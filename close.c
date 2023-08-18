@@ -1,4 +1,6 @@
 #include "shell.h"
+#include <string.h>
+
 
 /**
  * close - Exit the program
@@ -13,7 +15,7 @@ void _close(shell_t *shell_vars)
     /* Look for the "exit" command and check if an exit status is provided */
     while (shell_vars->tokens[i] != NULL)
     {
-        if (_strncmp(shell_vars->tokens[i], "exit") == 0 && shell_vars->tokens[i + 1] != NULL)
+        if (_strcmp(shell_vars->tokens[i], "exit") == 0 && shell_vars->tokens[i + 1] != NULL)
         {
             i++; // Move to the next token
             close_status = _atoi(shell_vars->tokens[i]); /* Convert the exit status string to an integer */

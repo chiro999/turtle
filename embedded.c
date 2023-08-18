@@ -1,3 +1,5 @@
+#include "shell.h"
+
 /**
  * curr_env - prints the current environment
  * @input_vars: struct of variables
@@ -38,7 +40,7 @@ void create_edit_env(shell_t *shell_vars)
     }
 
     /* Find an existing environment variable */
-    env_var = find_env(shell_vars->env_vars, shell_vars->tokens[1]);
+    env_var = is_env(shell_vars->env_vars, shell_vars->tokens[1]);
 
     if (!env_var) /* Variable doesn't exist, create a new one */
     {
@@ -47,7 +49,7 @@ void create_edit_env(shell_t *shell_vars)
     else /* Variable exists, update its value */
     {
         /* Add the new value and get the updated input string */
-        input = add_value(shell_vars->tokens[1], shell_vars->tokens[2]);
+        input = si_value(shell_vars->tokens[1], shell_vars->tokens[2]);
 
         if (!input) /* Adding value failed */
         {

@@ -16,13 +16,8 @@ void print_error(shell_t *shell_vars, char *err_message)
     str_error(": ");
 
     /* Convert and print command count */
-<<<<<<< HEAD
-    tokenCount = int_to_string(shell_vars->tokenCount);
+    tokenCount = int_to_string(shell_vars->tokenCount); // Corrected function name
     str_error(tokenCount);
-=======
-    tokenCount = int_to_str(shell_vars->tokenCount);
-    str_error(tokenCpimt);
->>>>>>> 19b096774c648afb4d06db62340c1737b32a5972
     free(tokenCount);
     str_error(": ");
 
@@ -31,8 +26,9 @@ void print_error(shell_t *shell_vars, char *err_message)
 
     /* Print custom error message or system error message */
     if (err_message) {
+        str_error(": ");
         str_error(err_message);
-    } else {
-        perror(""); // Prints system error message
     }
+
+    str_error("\n");
 }

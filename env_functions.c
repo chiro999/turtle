@@ -1,3 +1,6 @@
+#include <stddef.h>
+#include <stdlib.h>
+
 /**
  * is_env - finds an environment variable
  * @env_var: array of environment variables
@@ -7,26 +10,24 @@
  */
 char **is_env(char **env_var, char *path)
 {
-    unsigned int i = 0, j, path_len = _strlen(path); /* Declare variables for iteration and path length */
+    unsigned int i = 0, j, path_len = _strlen(path);
 
-    /* Iterate through the array of environment variables */
     while (env_var[i])
     {
-        j = 0; // Reset j for each iteration
+        j = 0;
 
-        /* Iterate through the characters of the current environment variable */
-        while (j < path_len && path[j] == env_var[i][j])
+        while (path[j] != '\0' && path[j] == env_var[i][j])
         {
-            j++; // Move to the next character
-
-            /* Check if the loop finished and the current character is '=' */
-            if (j == path_len && env_var[i][j] == '=')
-                return (&env_var[i]); /* Return the address of the matching environment variable */
+            j++;
         }
-        i++; // Move to the next environment variable
+
+        if (path[j] == '\0' && env_var[i][j] == '=')
+            return (&env_var[i]);
+
+        i++;
     }
 
-    return (NULL); /* Return NULL if no match is found */
+    return (NULL);
 }
 
 /**
@@ -39,14 +40,13 @@ void env_free(char **env)
 {
     unsigned int i = 0;
 
-    /* Iterate through the environment variables and free each one */
     while (env[i])
     {
-        free(env[i]); /* Free the memory allocated for the current environment variable */
-        i++; // Move to the next environment variable
+        free(env[i]);
+        i++;
     }
 
-    free(env); /* Free the memory allocated for the array of environment variables */
+    free(env);
 }
 
 /**
@@ -57,36 +57,31 @@ void env_free(char **env)
  */
 char **env_copy(char **environ)
 {
-    char **copy = NULL;  /* Pointer to the new environment array */
-    size_t i = 0;        /* Counter for loops */
-    size_t len;          /* Length of the new environment array */
+    char **copy = NULL;
+    size_t i = 0, len;
 
-    /* Count the number of elements in the existing environment array */
     while (environ[i] != NULL)
         i++;
 
-    len = i + 1;  /* Calculate the length of the new environment array */
+    len = i + 1;
 
-    /* Allocate memory for the new environment array */
     copy = malloc(sizeof(char *) * len);
-    if (!copy)  /* Using if (!copy) instead of if (copy == NULL) */
+    if (!copy)
     {
-        perror("Error");  /* Change the error message */
+        perror("Memory Allocation Error");
         exit(1);
     }
 
-    /* Copy each string from the existing environment to the new environment */
-    i = 0;  /* Reset the counter for copying */
+    i = 0;
     while (environ[i] != NULL)
     {
         copy[i] = _strdup(environ[i]);
         i++;
     }
 
-    /* Add a NULL pointer to mark the end of the new environment array */
     copy[i] = NULL;
 
-    return copy;  /* Return a pointer to the newly created environment array */
+    return copy;
 }
 
 /**
@@ -98,50 +93,39 @@ char **env_copy(char **environ)
  */
 char *new_env(char *name, char *value)
 {
-    unsigned int name_len, value_len, i, j;
+    unsigned int name_len, value_len, i = 0, j = 0;
     char *new_env;
-    unsigned int combined_length;  /* Combined length of name, value, '=', separator, and null terminator */
-    char separator = '=';  /* The separator character */
+    unsigned int combined_length;
+    char separator = '=';
 
-    /* Calculate the lengths of the name and value strings */
     name_len = _strlen(name);
     value_len = _strlen(value);
 
-    /* Calculate the combined length of the new environment variable string */
-    /* +2 is added for the separator and null terminator */
-    combined_length = name_len + value_len + 2;  /* +2 because of separator and null character */
+    combined_length = name_len + value_len + 2;
 
-    /* Allocate memory for the new environment variable string */
     new_env = malloc(sizeof(char) * combined_length);
-    if (!new_env)  /* Using if (!new_env) instead of if (new == NULL) */
-        return (NULL);
+    if (!new_env)
+        return NULL;
 
-    /* Copy the characters from the name string to the new string using a while loop */
-    i = 0;  /* Initialize the counter */
-    while (name[i] != '\0')
+    while (i < name_len)
     {
         new_env[i] = name[i];
         i++;
     }
 
-    /* Set the separator character between name and value */
     new_env[i] = separator;
 
-    /* Increment i to position after the separator */
     i++;
 
-    /* Copy the characters from the value string to the new string using a while loop */
-    j = 0;  /* Initialize the counter */
-    while (value[j] != '\0')
+    while (j < value_len)
     {
         new_env[i + j] = value[j];
         j++;
     }
 
-    /* Add the null terminator to the new string */
     new_env[i + j] = '\0';
 
-    return (new_env);  /* Return a pointer to the new environment variable string */
+    return new_env;
 }
 
 /**
@@ -155,14 +139,11 @@ void env_plus(input_t *input_variables)
     unsigned int i = 0;
     char **new_env;
 
-    /* Count the number of existing environment variables using a while loop */
     while (input_variables->env[i] != NULL)
         i++;
 
-    /* Calculate the total number of elements needed (variables + new variable + NULL terminator) */
     unsigned int spec_elements = i + 2;
 
-    /* Allocate memory for a new environment array with space for the specified elements */
     new_env = malloc(sizeof(char *) * spec_elements);
     if (!new_env)
     {
@@ -171,7 +152,6 @@ void env_plus(input_t *input_variables)
         _exit_(input_variables);
     }
 
-    /* Copy existing environment variables to the new array using a while loop */
     unsigned int j = 0;
     while (j < i)
     {
@@ -179,23 +159,20 @@ void env_plus(input_t *input_variables)
         j++;
     }
 
-    /* Create a new environment variable and add it to the new array */
-    new_env[i] = add_value(input_variables->tokens[1], input_variables->tokens[2]);
+    new_env[i] = new_env(input_variables->tokens[1], input_variables->tokens[2]);
     if (!new_env[i])
     {
         print_error(input_variables, NULL);
         free(input_variables->buffer);
         free(input_variables->commands);
         free(input_variables->tokens);
-        free_environ(input_variables->env);
+        env_free(input_variables->env);
         free(new_env);
         exit(127);
     }
 
-    /* Set the last element of the new array to NULL to terminate the list */
     new_env[spec_elements - 1] = NULL;
 
-    /* Free the old environment array and update it with the new array */
-    free(input_variables->env);
+    env_free(input_variables->env);
     input_variables->env = new_env;
 }
