@@ -13,33 +13,87 @@
 #define UNUSED(x) (void)(x)
 
 /**
- * struct builtins - struct for the builtin functions
- * @name: name of builtin command
- * @f: function for corresponding builtin
+ * struct shell_vars - Variables for the shell
+ * @tokens: Command line arguments
+ * @cmd_mem: Buffer for command
+ * @env_vars: Environment variables
+ * @tokenCount: Count of tokens
+ * @argv: Arguments at opening of shell
+ * @close_status: Exit status
+ * @commands: Commands to execute
  */
-typedef struct builtins
+typedef struct shell_vars
 {
-	char *name;
-	void (*f)(input_t *);
-} builtins_t;
+    char **tokens;
+    char *cmd_mem;
+    char **env_vars;
+    size_t tokenCount;
+    char **argv;
+    int close_status;
+    char **commands;
+} shell_t;
 
-ssize_t _puts(char *s);
-char *_strdup(char *duplicate);
+/**
+ * struct embedded - Struct for the builtin functions
+ * @name: Name of builtin command
+ * @f: Function for corresponding builtin
+ */
+typedef struct embedded
+{
+    char *name;
+    void (*f)(shell_t *);
+} embedded_t;
+
+/* PATH functions */
+int _execute(char *command, shell_t *shell_vars);
+char *str_path(char **env_arr);
+void exec_curr_dir(shell_t *shell_vars);
+void check_path(shell_t *shell_vars);
+int is_PATH(char *name);
+
+/* Close function */
+void close_shell(shell_t *shell_vars);  // Renamed from close() to avoid conflicts
+
+/* Strtok functions */
+unsigned int is_a_match(char c, const char *str);
+char *custom_strtok(char *str, const char *delim);
+
+/* Tokenizer function */
+char **custom_tokenizer(char *inputBuffer, char *delimiter);
+
+/* Embedded functions */
+void curr_env(shell_t *shell_vars);
+void create_edit_env(shell_t *shell_vars);
+void rm_env(shell_t *shell_vars);
+void (*embedded(shell_t *shell_vars))(shell_t *shell_vars);
+
+/* Environment functions */
+char **is_env(char **env_var, char *path);
+void env_free(char **env);
+char **env_copy(char **environ);
+char *new_env(char *name, char *value);
+void env_plus(shell_t *shell_vars);
+
+/* Stdlib replacements */
 char *_strcat(char *dest, char *src);
-unsigned int _strlen(char *s);
-
-char **_realloc(char **ptr, size_t *size);
-
-int _strncmp(char *s1, char *s2);
-
+int _strcmp(char *s1, char *s2);
 int _atoi(char *s);
 
-void _printer(char *str);
-char *_int_str(unsigned int count);
+ssize_t str_out(char *str);
+int _strlen(char *s);
+void str_error(char *str);
 
-/* _strtok & tokenize: _strtok.c & tokenizer.c */
-unsigned int matching(char c, const char *str);
-char *_strtok(char *str, const char *delim);
-char **tokenize(char *arguments, char *delimiter);
+char *_strdup(char *replica);
+char *int_to_string(unsigned int count);
 
-#endif /* _SHELL_H_ */
+/* Memory reallocation function */
+char **more_mem(char **ptr, size_t *size);
+
+/* Print error function */
+void print_error(shell_t *shell_vars, char *err_message);
+
+/* Main function yet to be added */
+void sig_handler(int sig_handler);
+int main(int argc, char **argv, char **environment);
+
+#endif 

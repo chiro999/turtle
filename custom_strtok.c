@@ -1,4 +1,3 @@
-User
 #include "shell.h"
 
 /**
@@ -10,14 +9,14 @@ User
  */
 unsigned int is_a_match(char c, const char *str)
 {
-	unsigned int i;
+    unsigned int i;
 
-	for (i = 0; str[i] != '\0'; i++)
-	{
-		if (c == str[i])
-			return (1);
-	}
-	return (0);
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        if (c == str[i])
+            return (1);
+    }
+    return (0);
 }
 
 char *custom_strtok(char *str, const char *delim)
@@ -38,42 +37,41 @@ char *custom_strtok(char *str, const char *delim)
         return (NULL);
 
     /* Find the start of the next token by skipping over delimiter characters */
-    for (i = 0; next_token[i] != '\0'; i++)
+    for (i = 0; token[i] != '\0'; i++)
     {
-        if (is_a_match(next_token[i], delim) == 0)
+        if (is_a_match(token[i], delim) == 0)
             break;
     }
 
-    /* If the end of the string or a '#' character is found, there are no more tokens */
-    if (next_token[i] == '\0' || next_token[i] == '#')
+    /* If the end of the string is reached, there are no more tokens */
+    if (token[i] == '\0')
     {
         next_token = NULL;
         return (NULL);
     }
 
     /* Update 'token' to point to the beginning of the next token */
-    token = next_token + i;
-    next_token = token;
+    token += i;
 
     /* Find the end of the token by searching for the next delimiter */
-    for (i = 0; next_token[i] != '\0'; i++)
+    for (i = 0; token[i] != '\0'; i++)
     {
-        if (is_a_match(next_token[i], delim) == 1)
+        if (is_a_match(token[i], delim) == 1)
             break;
     }
 
     /* If the end of the string is reached, set 'next' to NULL */
-    if (next_token[i] == '\0')
+    if (token[i] == '\0')
         next_token = NULL;
     else
     {
         /* Replace the delimiter character with a null terminator */
-        next_token[i] = '\0';
+        token[i] = '\0';
 
-        /* Update 'next' to point to the character after the delimiter */
-        next_token += i + 1;
+        /* Update 'next_token' to point to the character after the delimiter */
+        next_token = token + i + 1;
 
-        /* If the next character is the end of the string, set 'next' to NULL */
+        /* If the next character is the end of the string, set 'next_token' to NULL */
         if (*next_token == '\0')
             next_token = NULL;
     }
