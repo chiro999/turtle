@@ -43,7 +43,7 @@ typedef struct embedded
 {
 	char *name;
 	void (*f)(shell_t *);
-} embedded_t
+} embedded_t;
 
 /* PATH functions */
 int _execute(char *command, shell_t *shell_vars);
