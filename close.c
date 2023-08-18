@@ -11,35 +11,35 @@ void close(input_t *input_variables)
     int i = 0;
 
     /* Look for the "exit" command and check if an exit status is provided */
-    while (input_variables->tokens[i] != NULL)
+    while (shell_vars->tokens[i] != NULL)
     {
-        if (_strncmp(input_variables->tokens[i], "exit") == 0 && input_variables->tokens[i + 1] != NULL)
+        if (_strncmp(shell_vars->tokens[i], "exit") == 0 && shell_vars->tokens[i + 1] != NULL)
         {
             i++; // Move to the next token
-            close_status = _atoi(input_variables->tokens[i]); /* Convert the exit status string to an integer */
+            close_status = _atoi(shell_vars->tokens[i]); /* Convert the exit status string to an integer */
 
             /* Check if the conversion failed (non-numeric input) */
             if (close_status == -1)
             {
-                input_variables->status = 2; /* Set exit status to 2 (indicating an error) */
-                _error(input_variables, ": Unacceptable input: "); /* Call the error handling function */
-                str_out(input_variables->tokens[i]); /* Print the problematic input */
+                shell_vars->close_status = 2; /* Set exit status to 2 (indicating an error) */
+                print_error(shell_vars, ": Unacceptable input: "); /* Call the error handling function */
+                str_out(shell_vars->tokens[i]); /* Print the problematic input */
                 str_out("\n"); /* Print a newline character */
-                free(input_variables->commands); /* Free allocated memory */
-                input_variables->commands = NULL; /* Set pointer to NULL */
+                free(shell_vars->commands); /* Free allocated memory */
+                shell_vars->commands = NULL; /* Set pointer to NULL */
                 return; /* Exit the function */
             }
 
-            input_variables->status = close_status; /* Set the exit status to the provided status */
+            shell_vars->close_status = close_status; /* Set the exit status to the provided status */
         }
         i++; // Move to the next token
     }
 
     /* Free allocated memory */
-    free(input_variables->buffer);
-    free(input_variables->tokens);
-    free(input_variables->commands);
-    free_environ(input_variables->env);
+    free(shell_vars->cmd_mem);
+    free(shell_vars->tokens);
+    free(shell_vars->commands);
+    env_free(shell_vars->env_vars);
 
-    exit(input_variables->status); /* Exit the program with the specified exit status */
+    exit(shell_vars->close_status); /* Exit the program with the specified exit status */
 }
