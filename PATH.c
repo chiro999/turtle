@@ -122,8 +122,8 @@ int exec_curr_dir(shell_t *shell_vars)
             if (child_process == 0) /* Child process */
             {
                 /* Execute the command using execve */
-                if (execve(shell_vars->tokens[0], input_variables->tokens, input_variables->env) == -1)
-                   print _error(shell_vars, NULL); /* Handle error */
+                if (execve(shell_vars->tokens[0], shell_vars->tokens, shell_vars->env_vars) == -1)
+                   print_error(shell_vars, NULL); /* Handle error */
             }
             else /* Parent process */
             {
