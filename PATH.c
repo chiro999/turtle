@@ -117,7 +117,7 @@ int exec_curr_dir(shell_t *shell_vars)
             child_process = fork();
 
             if (child_process == -1)
-               print _error(shell_vars, NULL); /* Handle error */
+               print_error(shell_vars, NULL); /* Handle error */
 
             if (child_process == 0) /* Child process */
             {
@@ -133,8 +133,8 @@ int exec_curr_dir(shell_t *shell_vars)
                 /* Check exit status of the child process */
                 if (WIFEXITED(shell_vars->close_status))
                     shell_vars->close_status = WEXITSTATUS(shell_vars->close_status);
-                else if (WIFSIGNALED(shell_vars->close_status) && WTERMSIG(shell_vars->status) == SIGINT)
-                    input_variables->status = 130;
+                else if (WIFSIGNALED(shell_vars->close_status) && WTERMSIG(shell_vars->close_status) == SIGINT)
+                    shell_vars->close_status = 130;
 
                 return 0; /* Exit the function */
             }
@@ -165,7 +165,7 @@ int exec_curr_dir(shell_t *shell_vars)
  * Searches command using PATH. Checks current dir, then PATH dirs. Executes if found,
  * sets status if not.
  */
-void check_path(input_t *inputs)
+void check_path(shell_t *shell_vars)
 {
     char *path, *clone = NULL, *check = NULL;
     unsigned int i = 0;
@@ -173,12 +173,12 @@ void check_path(input_t *inputs)
     char **path_tokens;
 
     /* Check if the command is in the current working directory */
-    if (is_PATH(inputs->tokens[0]))
-        exec_success = exec_curr_dir(inputs);
+    if (is_PATH(shell_vars->tokens[0]))
+        exec_success = exec_curr_dir(shell_vars);
     else
     {
         /* Find the PATH environment variable */
-        path = str_path(inputs->env);
+        path = str_path(shell_vars->env_vars);
 
         if (path != NULL)
         {
@@ -190,13 +190,13 @@ void check_path(input_t *inputs)
             i = 0;
             while (path_tokens && path_tokens[i])
             {
-                check = _strcat(path_tokens[i], inputs->tokens[0]);
+                check = _strcat(path_tokens[i], shell_vars->tokens[0]);
 
                 /* Check if the executable exists in the directory */
                 int exists = access(check, F_OK);
                 if (exists == 0)
                 {
-                    exec_success = _execute(check, inputs);
+                    exec_success = _execute(check, shell_vars);
                     free(check);
                     break;
                 }
@@ -209,16 +209,16 @@ void check_path(input_t *inputs)
             free(clone);
             if (path_tokens == NULL)
             {
-                inputs->status = 127;
-                _exit_(inputs);
+                shell_vars->close_status = 127;
+                close(shell_vars);
             }
         }
 
         /* If executable not found in any directory */
         if (path == NULL || path_tokens[i] == NULL)
         {
-            _error(inputs, ": not found\n");
-            inputs->status = 127;
+            print_error(shell_vars, ": not found\n");
+            shell_vars->close_status = 127;
         }
 
         /* Clean up allocated memory */
@@ -227,7 +227,7 @@ void check_path(input_t *inputs)
 
     /* If execution is successful, exit the program */
     if (exec_success == 1)
-        _exit_(inputs);
+        close(shell_vars);
 }
 
 /**
