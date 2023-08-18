@@ -42,7 +42,7 @@ typedef struct shell_vars
 typedef struct embedded
 {
 	char *name;
-	void (*f)(input_t *);
+	void (*f)(shell_t *);
 } embedded_t
 
 /* PATH functions */
