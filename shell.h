@@ -56,16 +56,16 @@ int is_PATH(char *name);
 void close(shell_t *shell_vars);
 
 /* strtok functions */
-unsigned int is_a_match(char c, const char *str)
-char *custom_strtok(char *str, const char *delim)
+unsigned int is_a_match(char c, const char *str);
+char *custom_strtok(char *str, const char *delim);
 
 /* tokenizer function */
-char **custom_tokenizer(char *inputBuffer, char *delimiter)
+char **custom_tokenizer(char *inputBuffer, char *delimiter);
 
 /* embedded functions */
 void curr_env(shell_t *shell_vars);
 void create_edit_env(shell_t *shell_vars);
-void rm_env(input_t *shell_vars);
+void rm_env(shell_t *shell_vars);
 void (*embedded(shell_t *shell_vars))(shell_t *shell_vars);
 
 /* environment function */
@@ -84,8 +84,8 @@ ssize_t str_out(char *str);
 int _strlen(char *s);
 void str_error(char *str);
 
-char *_strdup(char *replica)
-char *int_to_string(unsigned int count)
+char *_strdup(char *replica);
+char *int_to_string(unsigned int count);
 
 /* memory reallocation function */
 char **more_mem(char **ptr, size_t *size);
