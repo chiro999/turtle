@@ -210,7 +210,7 @@ void check_path(shell_t *shell_vars)
             if (path_tokens == NULL)
             {
                 shell_vars->close_status = 127;
-                close(shell_vars);
+                _close(shell_vars);
             }
         }
 
@@ -227,7 +227,7 @@ void check_path(shell_t *shell_vars)
 
     /* If execution is successful, exit the program */
     if (exec_success == 1)
-        close(shell_vars);
+        _close(shell_vars);
 }
 
 /**
