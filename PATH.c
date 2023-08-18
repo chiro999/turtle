@@ -7,7 +7,7 @@
  *
  * Return: 0 on success, 1 on failure
  */
-int _execute(char *command, input_t *input_variables)
+int _execute(char *command, shell_t *shell_vars)
 {
     pid_t child_process; /* Declare a variable to store the child process ID */
 
@@ -19,39 +19,39 @@ int _execute(char *command, input_t *input_variables)
 
         /* Check if fork() failed */
         if (child_process == -1)
-            _error(input_variables, NULL); /* Call the error handling function */
+            print_error(shell_vars, NULL); /* Call the error handling function */
 
         /* If this is the child process */
         if (child_process == 0)
         {
             /* Attempt to execute the command using execve() */
-            if (execve(command, input_variables->tokens, input_variables->env) == -1)
+            if (execve(command, shell_vars->tokens, shell_vars->env_vars) == -1)
                 _error(input_variables, NULL); /* Call the error handling function */
         }
         /* If this is the parent process */
         else
         {
             /* Wait for the child process to complete */
-            wait(&input_variables->status);
+            wait(&shell_vars->close_status);
 
             /* Check if the child process exited normally */
-            if (WIFEXITED(input_variables->status))
-                input_variables->status = WEXITSTATUS(input_variables->status);
+            if (WIFEXITED(shell_vars->close_status))
+                shell_vars->close_status = WEXITSTATUS(shell_vars->close_status);
             /* Check if the child process was terminated by a signal (e.g., Ctrl+C) */
-            else if (WIFSIGNALED(input_variables->status) && WTERMSIG(input_variables->status) == SIGINT)
-                input_variables->status = 130;
+            else if (WIFSIGNALED(shell_vars->close_status) && WTERMSIG(shell_vars->close_status) == SIGINT)
+                shell_vars->close_status = 130;
 
             return 0; /* Return 0 to indicate successful execution */
         }
 
         /* If execution reaches here, there was an issue with executing the command */
-        input_variables->status = 127;
+        shell_vars->close_status = 127;
         return 1; /* Return 1 to indicate execution failure */
     }
     else /* If access to the command is not permitted */
     {
-        _error(input_variables, ": Permission denied\n"); /* Call the error handling function */
-        input_variables->status = 126;
+        print_error(shell_vars, ": Permission denied\n"); /* Call the error handling function */
+        shell_vars->close_status = 126;
     }
 
     return 0; /* Return 0 to indicate successful completion (even if permission denied) */
@@ -63,19 +63,19 @@ int _execute(char *command, input_t *input_variables)
  *
  * Return: pointer to the node that contains the PATH, or NULL on failure
  */
-char *str_path(char **env_arr)
+char *str_path(char **env_vars)
 {
     /* The string we're looking for to identify the PATH variable */
     char *path_str = "PATH=";
     unsigned int x = 0, y;
 
     /* Loop through each element in the env_arr array using a while loop */
-    while (env_arr[x] != NULL)
+    while (env_vars[x] != NULL)
     {
         y = 0; /* Initialize y for the inner loop */
 
         /* Compare the characters of the path_str string and the current environment variable using a while loop */
-        while (y < 5 && path_str[y] == env_arr[x][y])
+        while (y < 5 && path_str[y] == env_vars[x][y])
         {
             y++; /* Move to the next character */
         }
@@ -88,7 +88,7 @@ char *str_path(char **env_arr)
     }
 
     /* Return the environment variable where "PATH" was found */
-    return (env_arr[x]);
+    return (env_vars[x]);
 }
 
 /*
@@ -103,58 +103,58 @@ char *str_path(char **env_arr)
  *
  * Return: 0 if the function completes successfully, 1 if there's an error
  */
-int exec_curr_dir(input_t *input_variables)
+int exec_curr_dir(shell_t *shell_vars)
 {
     pid_t child_process;
 
     /* Check if the command file exists in the current working directory */
-    if (access(input_variables->tokens[0], F_OK) == 0)
+    if (access(shell_vars->tokens[0], F_OK) == 0)
     {
         /* Check if the command file is executable */
-        if (access(input_variables->tokens[0], X_OK) == 0)
+        if (access(shell_vars->tokens[0], X_OK) == 0)
         {
             /* Fork a child process to execute the command */
             child_process = fork();
 
             if (child_process == -1)
-                _error(input_variables, NULL); /* Handle error */
+               print _error(shell_vars, NULL); /* Handle error */
 
             if (child_process == 0) /* Child process */
             {
                 /* Execute the command using execve */
-                if (execve(input_variables->tokens[0], input_variables->tokens, input_variables->env) == -1)
-                    _error(input_variables, NULL); /* Handle error */
+                if (execve(shell_vars->tokens[0], input_variables->tokens, input_variables->env) == -1)
+                   print _error(shell_vars, NULL); /* Handle error */
             }
             else /* Parent process */
             {
                 /* Wait for the child process to finish */
-                wait(&input_variables->status);
+                wait(&shell_vars->close_status);
 
                 /* Check exit status of the child process */
-                if (WIFEXITED(input_variables->status))
-                    input_variables->status = WEXITSTATUS(input_variables->status);
-                else if (WIFSIGNALED(input_variables->status) && WTERMSIG(input_variables->status) == SIGINT)
+                if (WIFEXITED(shell_vars->close_status))
+                    shell_vars->close_status = WEXITSTATUS(shell_vars->close_status);
+                else if (WIFSIGNALED(shell_vars->close_status) && WTERMSIG(shell_vars->status) == SIGINT)
                     input_variables->status = 130;
 
                 return 0; /* Exit the function */
             }
 
             /* If execve or fork failed, set the status and return */
-            input_variables->status = 127;
+            shell_vars->close_status = 127;
             return 1;
         }
         else
         {
-            _error(input_variables, ": Permission denied\n");
-            input_variables->status = 126;
+            print_error(shell_vars, ": Permission denied\n");
+            shell_vars->close_status = 126;
         }
 
         return 0;
     }
 
     /* If the command is not found, set the status and return */
-    _error(input_variables, ": not found\n");
-    input_variables->status = 127;
+    print_error(shell_vars, ": not found\n");
+    shell_vars->close_status = 127;
     return 0;
 }
 
