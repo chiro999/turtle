@@ -1,4 +1,3 @@
-User
 #include "shell.h"
 
 /**

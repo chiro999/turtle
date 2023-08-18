@@ -9,22 +9,22 @@
  */
 char **custom_tokenizer(char *inputBuffer, char *delimiter)
 {
-    char **tokenArray = NULL;  /* Array of pointers to hold tokens */
+    char **tokens = NULL;  /* Array of pointers to hold tokens */
     size_t index = 0, tokenCount = 10;  /* Index and initial token count */
 
     if (inputBuffer == NULL)
         return NULL;  /* If the input buffer is NULL, return NULL */
 
     /* Allocate memory for the token array */
-    tokenArray = malloc(sizeof(char *) * tokenCount);
-    if (tokenArray == NULL)
+    tokens = malloc(sizeof(char *) * tokenCount);
+    if (tokens == NULL)
     {
         perror("Fatal Error");
         return NULL;  /* If memory allocation fails, return NULL */
     }
 
     /* Loop through the input buffer, tokenizing using the delimiter */
-    while ((tokenArray[index] = CustomStrTok(inputBuffer, delimiter)) != NULL)
+    while ((tokens[index] = custom_tokenizer(inputBuffer, delimiter)) != NULL)
     {
         index++;  /* Increment the index for each successfully tokenized element */
 
@@ -32,7 +32,7 @@ char **custom_tokenizer(char *inputBuffer, char *delimiter)
         if (index == tokenCount)
         {
             /* Resize the token array using a custom resizing function */
-            tokenArray = more_mem(tokenArray, &tokenCount);
+            tokens = more_mem(tokens, &tokenCount);
             if (tokenArray == NULL)
             {
                 perror("Fatal Error");
@@ -43,5 +43,5 @@ char **custom_tokenizer(char *inputBuffer, char *delimiter)
         inputBuffer = NULL;  /* Reset the input buffer for subsequent tokenization */
     }
 
-    return tokenArray;  /* Return the array of tokens */
+    return tokens;  /* Return the array of tokens */
 }

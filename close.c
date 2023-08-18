@@ -5,7 +5,7 @@
  * @input_variables: Pointer to input variables
  * Return: void
  */
-void close(input_t *input_variables)
+void close(shell_t *shell_vars)
 {
     int close_status; /* Declare a variable to store the exit status */
     int i = 0;
