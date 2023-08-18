@@ -23,7 +23,7 @@
  * @status: exit status
  * @commands: commands to execute
  */
-typedef struct input
+typedef struct shell_vars
 {
 	char **tokens;
 	char *buffer;
@@ -32,7 +32,7 @@ typedef struct input
 	char **argv;
 	int status;
 	char **commands;
-} input_t;
+} shell_t;
 
 /**
  * struct builtins - struct for the builtin functions
