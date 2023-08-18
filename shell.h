@@ -28,7 +28,7 @@ typedef struct shell_vars
 	char **tokens;
 	char *cmd_mem;
 	char **env_vars;
-	size_t command_count;
+	size_t tokenCount;
 	char **argv;
 	int close_status;
 	char **commands;
