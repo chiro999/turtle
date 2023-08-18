@@ -26,11 +26,11 @@
 typedef struct shell_vars
 {
 	char **tokens;
-	char *buffer;
-	char **env;
-	size_t count;
+	char *cmd_mem;
+	char **env_vars;
+	size_t command_count;
 	char **argv;
-	int status;
+	int close_status;
 	char **commands;
 } shell_t;
 
