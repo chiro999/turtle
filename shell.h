@@ -46,14 +46,14 @@ typedef struct embedded
 } embedded_t
 
 /* PATH functions */
-int _execute(char *command, input_t *input_variables);
+int _execute(char *command, shell_t *shell_vars);
 char *str_path(char **env_arr);
-exec_curr_dir(input_t *input_variables);
-void check_path(input_t *inputs);
+exec_curr_dir(shell_t *shell_vars);
+void check_path(shell_t *shell_vars);
 int is_PATH(char *name);
 
 /* close function */
-void close(input_t *input_variables);
+void close(shell_t *shell_vars);
 
 /* strtok functions */
 unsigned int is_a_match(char c, const char *str)
@@ -63,17 +63,17 @@ char *custom_strtok(char *str, const char *delim)
 char **custom_tokenizer(char *inputBuffer, char *delimiter)
 
 /* embedded functions */
-void curr_env(input_t *input_vars);
-void create_edit_env(input_t *input_vars);
-void rm_env(input_t *input_vars);
-void (*embedded(input_t *inputs))(input_t *inputs);
+void curr_env(shell_t *shell_vars);
+void create_edit_env(shell_t *shell_vars);
+void rm_env(input_t *shell_vars);
+void (*embedded(shell_t *shell_vars))(shell_t *shell_vars);
 
 /* environment function */
 char **is_env(char **env_var, char *path);
 void env_free(char **env);
 char **env_copy(char **environ);
 char *new_env(char *name, char *value);
-void env_plus(input_t *input_variables);
+void env_plus(shell_t *shell_vars);
 
 /* stdlib replacements */
 char *_strcat(char *dest, char *src);
@@ -91,7 +91,7 @@ char *int_to_string(unsigned int count)
 char **more_mem(char **ptr, size_t *size);
 
 /*print error function*/
-void print_error(input_variables *input_variables, char *err_message);
+void print_error(shell_t *shell_vars, char *err_message);
 
 /* main function yet to be added */
 void sig_handler(int sig_handler);
