@@ -148,13 +148,13 @@ void (*embedded(shell_t *shell_vars))(shell_t *shell_vars)
 
     while (is_embedded[i].f != NULL)
     {
-        if (_strncmp(inputs->tokens[0], is_embedded[i].name) == 0)
+        if (_strncmp(shell_vars->tokens[0], is_embedded[i].name) == 0)
             break;
         i++;
     }
 
     if (is_embedded[i].f != NULL)
-        is_embedded[i].f(inputs);
+        is_embedded[i].f(shell_vars);
 
     return (is_embedded[i].f);
 }
