@@ -144,7 +144,7 @@ void (*embedded(shell_t *shell_vars))(shell_t *shell_vars)
         {"setenv", create_edit_env},
         {"exit", _close},
         {"env", curr_env},
-        {"unsetenv", _unsetenv},
+        {"unsetenv", rm_env},
         {NULL, NULL}
     };
 
