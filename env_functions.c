@@ -163,10 +163,10 @@ void env_plus(shell_t *shell_vars)
     if (!new_env[i])
     {
         print_error(shell_vars, NULL);
-        free(shell_vars->buffer);
+        free(shell_vars->cmd_mem);
         free(shell_vars->env_vars);
         free(shell_vars->tokens);
-        env_free(shell_vars->env);
+        env_free(shell_vars->env_vars);
         free(new_env);
         exit(127);
     }
