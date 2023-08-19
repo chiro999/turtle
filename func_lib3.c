@@ -59,3 +59,19 @@ char *int_to_string(unsigned int count)
 	return (str);
 }
 
+/**
+ * _strlen - returns the length of a string
+ * @s: string to be measured
+ * Return: length of string
+ */
+unsigned int _strlen(char *s)
+{
+	unsigned int i;
+
+	i = 0;
+
+	while(s[i])
+		i++;
+		
+	return (i);
+}
