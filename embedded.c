@@ -150,7 +150,7 @@ void (*embedded(shell_t *shell_vars))(shell_t *shell_vars)
 
     while (is_embedded[i].f != NULL)
     {
-        if (_strncmp(shell_vars->tokens[0], is_embedded[i].name) == 0)
+        if (_strcmp(shell_vars->tokens[0], is_embedded[i].name) == 0)
             break;
         i++;
     }
