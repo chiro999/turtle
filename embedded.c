@@ -109,7 +109,7 @@ void rm_env(shell_t *shell_vars)
 
     /* Copy environment variables except the one to unset */
     i = 0;
-    while (shell_vars->env[i] != *env)
+    while (shell_vars->env_vars[i] != *env)
     {
         new[i] = shell_vars->env_vars[i];
         i++;
