@@ -91,7 +91,7 @@ char **env_copy(char **environ)
 char *new_env(char *name, char *value)
 {
     unsigned int name_len, value_len, i = 0, j = 0;
-    char *new_env;
+    char *env_new;
     unsigned int combined_length;
     char separator = '=';
 
@@ -100,29 +100,29 @@ char *new_env(char *name, char *value)
 
     combined_length = name_len + value_len + 2;
 
-    new_env = malloc(sizeof(char) * combined_length);
-    if (!new_env)
+    env_new = malloc(sizeof(char) * combined_length);
+    if (env_new)
         return NULL;
 
     while (i < name_len)
     {
-        new_env[i] = name[i];
+        env_new[i] = name[i];
         i++;
     }
 
-    new_env[i] = separator;
+    env_new[i] = separator;
 
     i++;
 
     while (j < value_len)
     {
-        new_env[i + j] = value[j];
+        env_new[i + j] = value[j];
         j++;
     }
 
-    new_env[i + j] = '\0';
+    env_new[i + j] = '\0';
 
-    return new_env;
+    return env_new;
 }
 
 /**
