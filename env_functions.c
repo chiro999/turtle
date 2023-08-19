@@ -1,5 +1,4 @@
-#include <stddef.h>
-#include <stdlib.h>
+#include "shell.h"
 
 /**
  * is_env - finds an environment variable
@@ -137,15 +136,15 @@ char *new_env(char *name, char *value)
 void env_plus(shell_t *shell_vars)
 {
     unsigned int i = 0;
-    char **new_env;
+    char **plus;
 
     while (shell_vars->env_vars[i] != NULL)
         i++;
 
     unsigned int spec_elements = i + 2;
 
-    new_env = malloc(sizeof(char *) * spec_elements);
-    if (!new_env)
+    plus = malloc(sizeof(char *) * spec_elements);
+    if (!plus)
     {
         print_error(shell_vars, NULL);
         shell_vars->close_status = 127;
@@ -155,11 +154,11 @@ void env_plus(shell_t *shell_vars)
     unsigned int j = 0;
     while (j < i)
     {
-        new_env[j] = shell_vars->env_vars[j];
+        plus[j] = shell_vars->env_vars[j];
         j++;
     }
 
-    new_env[i] = new_env(shell_vars->tokens[1], shell_vars->tokens[2]);
+    plus[i] = new_env(shell_vars->tokens[1], shell_vars->tokens[2]);
     if (!new_env[i])
     {
         print_error(shell_vars, NULL);
@@ -171,7 +170,7 @@ void env_plus(shell_t *shell_vars)
         exit(127);
     }
 
-    new_env[spec_elements - 1] = NULL;
+    plus[spec_elements - 1] = NULL;
 
     env_free(shell_vars->env_vars);
     shell_vars->env_vars = new_env;
