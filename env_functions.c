@@ -173,5 +173,5 @@ void env_plus(shell_t *shell_vars)
     plus[spec_elements - 1] = NULL;
 
     env_free(shell_vars->env_vars);
-    shell_vars->env_vars = new_env;
+    shell_vars->env_vars = plus;
 }
