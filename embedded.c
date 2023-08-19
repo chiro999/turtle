@@ -34,7 +34,7 @@ void create_edit_env(shell_t *shell_vars)
     /* Check if the required arguments are present using logical OR */
     if (!shell_vars->tokens[1] || !shell_vars->tokens[2])
     {
-        print_error(input_vars, ": Incorrect number of arguments\n");
+        print_error(shell_vars, ": Incorrect number of arguments\n");
         shell_vars->close_status = 2; /* Set error status */
         return; /* Exit the function */
     }
@@ -142,7 +142,7 @@ void (*embedded(shell_t *shell_vars))(shell_t *shell_vars)
 
     embedded_t is_embedded[] = {
         {"setenv", create_edit_env},
-        {"exit", close},
+        {"exit", _close},
         {"env", curr_env},
         {"unsetenv", _unsetenv},
         {NULL, NULL}
