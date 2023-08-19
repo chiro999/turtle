@@ -58,7 +58,7 @@ void create_edit_env(shell_t *shell_vars)
             free(shell_vars->cmd_mem);
             free(shell_vars->commands);
             free(shell_vars->tokens);
-            free_environ(shell_vars->env_vars);
+            env_free(shell_vars->env_vars);
             exit(127); /* Exit with an error status code */
         }
 
@@ -92,7 +92,7 @@ void rm_env(shell_t *shell_vars)
     }
 
     i = 0;
-    while (shell_vars->env[i] != NULL)
+    while (shell_vars->env_vars[i] != NULL)
     {
         i++;
     }
@@ -116,7 +116,7 @@ void rm_env(shell_t *shell_vars)
     }
 
     j = i + 1;
-    while (shell_vars->env[j] != NULL)
+    while (shell_vars->env_vars[j] != NULL)
     {
         new[i] = shell_vars->env_vars[j];
         i++;
