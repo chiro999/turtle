@@ -62,7 +62,7 @@ int main(int argc, char **argv, char **environment)
     }
 
     if (interactive == 0)
-        _puts("\n");
+        str_out("\n");
     env_free(shell_vars.env_vars);
     free(shell_vars.cmd_mem);
     exit(shell_vars.close_status);
