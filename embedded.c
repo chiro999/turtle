@@ -111,21 +111,21 @@ void rm_env(shell_t *shell_vars)
     i = 0;
     while (shell_vars->env[i] != *env)
     {
-        new[i] = shell_vars->env[i];
+        new[i] = shell_vars->env_vars[i];
         i++;
     }
 
     j = i + 1;
     while (shell_vars->env[j] != NULL)
     {
-        new[i] = shell_vars->env[j];
+        new[i] = shell_vars->env_vars[j];
         i++;
         j++;
     }
 
     new[i] = NULL;
     free(*env);
-    free(input_vars->env_vars);
+    free(shell_vars->env_vars);
     shell_vars->env_vars = new;
     shell_vars->close_status = 0;
 
