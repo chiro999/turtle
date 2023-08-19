@@ -7,26 +7,24 @@
  *
  * Return: pointer to address of the environment variable
  */
+
 char **is_env(char **env_var, char *path)
 {
-    unsigned int i = 0, j, path_len = _strlen(path);
+    unsigned int i = 0, j = 0, path_len;
 
-    while (env_var[i])
+    path_len = _strlen(path);
+    while (!env_var[i])
     {
         j = 0;
-
-        while (path[j] != '\0' && path[j] == env_var[i][j])
-        {
+        while (j < path_len && path[j] == env_var[i][j])
             j++;
-        }
 
-        if (path[j] == '\0' && env_var[i][j] == '=')
+        if (j == path_len && env_var[i][j] == '=')
             return (&env_var[i]);
 
         i++;
     }
-
-    return (NULL);
+    return NULL;
 }
 
 /**
