@@ -52,7 +52,7 @@ void check_path(shell_t *shell_vars);
 int is_PATH(char *name);
 
 /* close function */
-void close_shell(shell_t *shell_vars);
+void _close(shell_t *shell_vars);
 
 /* strtok functions */
 unsigned int is_a_match(char c, const char *str);
