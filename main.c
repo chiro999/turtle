@@ -34,7 +34,7 @@ int main(int argc, char **argv, char **environment)
     if (!isatty(STDIN_FILENO))
         interactive = 1;
     if (interactive == 0)
-        _puts("$ ");
+        str_out("$ ");
 
     while (getline(&(shell_vars.cmd_mem), &cmd_mem, stdin) != -1)
     {
@@ -57,7 +57,7 @@ int main(int argc, char **argv, char **environment)
         free(shell_vars.cmd_mem);
         free(shell_vars.commands);
         if (interactive == 0)
-            _str_out("$ ");
+            str_out("$ ");
         shell_vars.cmd_mem = NULL;
     }
 
