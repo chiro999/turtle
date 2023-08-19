@@ -80,7 +80,7 @@ int _strcmp(char *s1, char *s2);
 int _atoi(char *s);
 
 ssize_t str_out(char *str);
-int _strlen(char *s);
+unsigned int _strlen(char *s);
 void str_error(char *str);
 
 char *_strdup(char *replica);
