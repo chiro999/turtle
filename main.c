@@ -57,7 +57,7 @@ int main(int argc, char **argv, char **environment)
         free(shell_vars.cmd_mem);
         free(shell_vars.commands);
         if (interactive == 0)
-            _puts("$ ");
+            _str_out("$ ");
         shell_vars.cmd_mem = NULL;
     }
 
