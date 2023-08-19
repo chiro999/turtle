@@ -9,7 +9,7 @@
 void sig_handler(int sig_handler)
 {
     (void) sig_handler;
-    _puts("\n$ ");
+    str_out("\n$ ");
 }
 
 /**
