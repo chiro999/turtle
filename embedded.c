@@ -49,7 +49,7 @@ void create_edit_env(shell_t *shell_vars)
     else /* Variable exists, update its value */
     {
         /* Add the new value and get the updated input string */
-        input = si_value(shell_vars->tokens[1], shell_vars->tokens[2]);
+        input = new_value(shell_vars->tokens[1], shell_vars->tokens[2]);
 
         if (!input) /* Adding value failed */
         {
