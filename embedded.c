@@ -83,7 +83,7 @@ void rm_env(shell_t *shell_vars)
     unsigned int i, j;
 
     /* Find the environment variable to unset */
-    env = find_env(shell_vars->env_vars, shell_vars->tokens[1]);
+    env = is_env(shell_vars->env_vars, shell_vars->tokens[1]);
 
     if (!env)
     {
@@ -104,7 +104,7 @@ void rm_env(shell_t *shell_vars)
     {
         print_error(shell_vars, NULL);
         shell_vars->close_status = 127;
-        close(shell_vars); // Assuming _exit_ is a custom function
+        _close(shell_vars); // Assuming _exit_ is a custom function
     }
 
     /* Copy environment variables except the one to unset */
