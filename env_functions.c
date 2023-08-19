@@ -134,12 +134,12 @@ char *new_env(char *name, char *value)
  *
  * Return: void
  */
-void env_plus(input_t *input_variables)
+void env_plus(shell_t *shell_vars)
 {
     unsigned int i = 0;
     char **new_env;
 
-    while (input_variables->env[i] != NULL)
+    while (shell_vars->env_vars[i] != NULL)
         i++;
 
     unsigned int spec_elements = i + 2;
@@ -147,32 +147,32 @@ void env_plus(input_t *input_variables)
     new_env = malloc(sizeof(char *) * spec_elements);
     if (!new_env)
     {
-        print_error(input_variables, NULL);
-        input_variables->status = 127;
-        _exit_(input_variables);
+        print_error(shell_vars, NULL);
+        shell_vars->close_status = 127;
+        _close(shell_vars);
     }
 
     unsigned int j = 0;
     while (j < i)
     {
-        new_env[j] = input_variables->env[j];
+        new_env[j] = shell_vars->env_vars[j];
         j++;
     }
 
-    new_env[i] = new_env(input_variables->tokens[1], input_variables->tokens[2]);
+    new_env[i] = new_env(shell_vars->tokens[1], shell_vars->tokens[2]);
     if (!new_env[i])
     {
-        print_error(input_variables, NULL);
-        free(input_variables->buffer);
-        free(input_variables->commands);
-        free(input_variables->tokens);
-        env_free(input_variables->env);
+        print_error(shell_vars, NULL);
+        free(shell_vars->buffer);
+        free(shell_vars->env_vars);
+        free(shell_vars->tokens);
+        env_free(shell_vars->env);
         free(new_env);
         exit(127);
     }
 
     new_env[spec_elements - 1] = NULL;
 
-    env_free(input_variables->env);
-    input_variables->env = new_env;
+    env_free(shell_vars->env_vars);
+    shell_vars->env_vars = new_env;
 }
