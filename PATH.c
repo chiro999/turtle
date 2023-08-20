@@ -40,3 +40,49 @@ int _execute(char *command, shell_t *shell_vars)
 
     return 0; /* Return 0 on success */
 }
+
+/**
+ * is_PATH - checks if the command is a part of a path
+ * @str: command
+ *
+ * Return: 1 on success (if '/' is found), 0 on failure (if '/' is not found)
+ */
+int is_PATH(char *name)
+{
+    unsigned int i;
+
+    for (i = 0; name[i]; i++)
+    {
+        if (name[i] == '/')
+            return 1;
+    }
+
+    return 0;
+}
+
+/**
+ * str_path - finds the PATH variable
+ * @env_arr: array of environment variables
+ *
+ * Return: pointer to the node that contains the PATH, or NULL on failure
+ */
+char *str_path(char **env_arr)
+{
+    char *path = "PATH=";
+    unsigned int i = 0, j;
+
+    while (env_arr[i] != NULL)
+    {
+        for (j = 0; j < 5; j++)
+        {
+            if (path[j] != env_arr[i][j])
+                break;
+        }
+        if (j == 5)
+            break;
+
+        i++;
+    }
+
+    return (env_arr[i]);
+}
