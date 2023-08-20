@@ -127,7 +127,7 @@ int exec_curr_dir(shell_t *shell_vars)
     return 0;
 }
 
-void path_check(shell_vars *shell_vars)
+void path_check(shell_t *shell_vars)
 {
     char *path, *replica = NULL, *check = NULL;
     unsigned int i = 0, run_cmd = 0;
