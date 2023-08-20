@@ -47,7 +47,7 @@ typedef struct embedded
 /* PATH functions */
 int _execute(char *command, shell_t *shell_vars);
 char *str_path(char **env_arr);
-void exec_curr_dir(shell_t *shell_vars);
+int exec_curr_dir(shell_t *shell_vars);
 void check_path(shell_t *shell_vars);
 int is_PATH(char *name);
 
