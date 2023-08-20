@@ -133,11 +133,11 @@ void path_check(shell_t *shell_vars)
     unsigned int i = 0, run_cmd = 0;
     char **path_tokens;
 
-    if (check_dir(shell_vars->tokens[0]))
-        run_cmd = exec_cwd(shell_vars);
+    if (is_PATH(shell_vars->tokens[0]))
+        run_cmd = exec_curr_dir(shell_vars);
     else
     {
-        path = find_path(shell_vars->env_vars);
+        path = str_path(shell_vars->env_vars);
         if (path != NULL)
         {
             replica = _strdup(path + 5);
