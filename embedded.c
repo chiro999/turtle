@@ -59,7 +59,7 @@ void create_edit_env(shell_t *shell_vars)
             free(shell_vars->commands);
             free(shell_vars->tokens);
             env_free(shell_vars->env_vars);
-            exit(11); /* Exit with an error status code */
+            exit(127); /* Exit with an error status code */
         }
 
         /* Free the old value and update with the new value */
@@ -103,7 +103,7 @@ void rm_env(shell_t *shell_vars)
     if (!new)
     {
         print_error(shell_vars, NULL);
-        shell_vars->close_status = 11;
+        shell_vars->close_status = 127;
         _close(shell_vars); // Assuming _exit_ is a custom function
     }
 
