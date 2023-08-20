@@ -17,7 +17,7 @@ int _execute(char *command, shell_t *shell_vars)
 
         if (child_process == -1)
         {
-            print_error(shell_vars, "Fork failed\n");
+            print_error(shell_vars, "Fork failed, no child process\n");
             return 1; /* Return 1 on failure */
         }
 
@@ -26,7 +26,7 @@ int _execute(char *command, shell_t *shell_vars)
             /* Attempt to execute the command using execve() */
             if (execve(command, shell_vars->tokens, shell_vars->env_vars) == -1)
             {
-                print_error(shell_vars, "Execution failed\n");
+                print_error(shell_vars, "Command failed to run\n");
                 return 1; /* Return 1 on failure */
             }
         }
@@ -34,7 +34,7 @@ int _execute(char *command, shell_t *shell_vars)
     else
     {
         /* Handle the case where access to the command is denied */
-        print_error(shell_vars, "Access denied\n");
+        print_error(shell_vars, "Command denied\n");
         return 1; /* Return 1 on failure */
     }
 
@@ -109,21 +109,21 @@ int exec_curr_dir(shell_t *shell_vars)
                 if (WIFEXITED(shell_vars->close_status))
                     shell_vars->close_status = WEXITSTATUS(shell_vars->close_status);
                 else if (WIFSIGNALED(shell_vars->close_status) && WTERMSIG(shell_vars->close_status) == SIGINT)
-                    shell_vars->close_status = 130;
+                    shell_vars->close_status = 30;
                 return 0;
             }
-            shell_vars->close_status = 127;
+            shell_vars->close_status = 11;
             return 1;
         }
         else
         {
             print_error(shell_vars, ": Permission denied\n");
-            shell_vars->close_status = 126;
+            shell_vars->close_status = 99;
         }
         return 0;
     }
     print_error(shell_vars, ": not found\n");
-    shell_vars->close_status = 127;
+    shell_vars->close_status = 11;
     return 0;
 }
 
@@ -155,14 +155,14 @@ void path_check(shell_t *shell_vars)
             free(replica);
             if (path_tokens == NULL)
             {
-                shell_vars->close_status = 127;
+                shell_vars->close_status = 11;
                 _close(shell_vars);
             }
         }
         if (path == NULL || path_tokens[i] == NULL)
         {
             print_error(shell_vars, ": not found\n");
-            shell_vars->close_status = 127;
+            shell_vars->close_status = 11;
         }
         free(path_tokens);
     }

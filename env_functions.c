@@ -145,7 +145,7 @@ void env_plus(shell_t *shell_vars)
     if (!plus)
     {
         print_error(shell_vars, NULL);
-        shell_vars->close_status = 127;
+        shell_vars->close_status = 11;
         _close(shell_vars);
     }
 
@@ -165,7 +165,7 @@ void env_plus(shell_t *shell_vars)
         free(shell_vars->tokens);
         env_free(shell_vars->env_vars);
         free(plus);
-        exit(127);
+        exit(11);
     }
 
     plus[spec_elements - 1] = NULL;
