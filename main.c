@@ -48,7 +48,7 @@ int main(int argc, char **argv, char **environment)
             if (shell_vars.tokens && shell_vars.tokens[0])
             {
                 if (embedded(&shell_vars) == NULL)
-                    check_path(&shell_vars);
+                    path_check(&shell_vars);
             }
             free(shell_vars.tokens);
             i++;
