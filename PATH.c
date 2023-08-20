@@ -109,21 +109,21 @@ int exec_curr_dir(shell_t *shell_vars)
                 if (WIFEXITED(shell_vars->close_status))
                     shell_vars->close_status = WEXITSTATUS(shell_vars->close_status);
                 else if (WIFSIGNALED(shell_vars->close_status) && WTERMSIG(shell_vars->close_status) == SIGINT)
-                    shell_vars->close_status = 30;
+                    shell_vars->close_status = 130;
                 return 0;
             }
-            shell_vars->close_status = 11;
+            shell_vars->close_status = 127;
             return 1;
         }
         else
         {
             print_error(shell_vars, ": Permission denied\n");
-            shell_vars->close_status = 99;
+            shell_vars->close_status = 126;
         }
         return 0;
     }
     print_error(shell_vars, ": not found\n");
-    shell_vars->close_status = 11;
+    shell_vars->close_status = 127;
     return 0;
 }
 
@@ -155,14 +155,14 @@ void path_check(shell_t *shell_vars)
             free(replica);
             if (path_tokens == NULL)
             {
-                shell_vars->close_status = 11;
+                shell_vars->close_status = 127;
                 _close(shell_vars);
             }
         }
         if (path == NULL || path_tokens[i] == NULL)
         {
             print_error(shell_vars, ": not found\n");
-            shell_vars->close_status = 11;
+            shell_vars->close_status = 127;
         }
         free(path_tokens);
     }
