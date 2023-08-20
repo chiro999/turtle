@@ -12,7 +12,7 @@ char **more_mem(char **ptr, size_t *size)
 	char **new;
 	size_t i = 0;
 
-	new = malloc(sizeof(char *) * ((*size) + 20));
+	new = malloc(sizeof(char *) * ((*size) + 10));
 	if (new == NULL)
 	{
 		free(ptr);
@@ -24,7 +24,7 @@ char **more_mem(char **ptr, size_t *size)
 		new[i] = ptr[i];
 		i++;
 	}
-	*size += 20;
+	*size += 10;
 	free(ptr);
 	return (new);
 }
