@@ -10,7 +10,7 @@
 char **custom_tokenizer(char *inputBuffer, char *delimiter)
 {
     char **tokens = NULL;  /* Array of pointers to hold tokens */
-    size_t index = 0, tokenCount = 10;  /* Index and initial token count */
+    size_t index = 0, tokenCount = 5;  /* Index and initial token count */
 
     if (inputBuffer == NULL)
         return NULL;
