@@ -92,8 +92,8 @@ char **more_mem(char **ptr, size_t *size);
 /* print error function */
 void print_error(shell_t *shell_vars, char *err_message);
 
-/* main function yet to be added */
-void sig_handler(int sig_handler);
+/* main functions */
+void handle_signal(int handle_signal);
 int main(int argc, char **argv, char **environment);
 
 #endif
