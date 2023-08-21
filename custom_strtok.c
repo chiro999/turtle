@@ -28,7 +28,7 @@ char *custom_strtok(char *str, const char *delim)
     static char *next_token;
     unsigned int i;
 
-    if (str != NULL)
+    if (str)
         next_token = str;
 
     token = next_token;
