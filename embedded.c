@@ -141,10 +141,10 @@ void (*embedded(shell_t *shell_vars))(shell_t *shell_vars)
     unsigned int i = 0;
 
     embedded_t is_embedded[] = {
-        {"setenv", create_edit_env},
-        {"exit", _close},
-        {"env", curr_env},
-        {"unsetenv", rm_env},
+        {"edit", create_edit_env},
+        {"X", _close},
+        {"current", curr_env},
+        {"remove", rm_env},
         {NULL, NULL}
     };
 
