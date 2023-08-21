@@ -1,14 +1,14 @@
 #include "shell.h"
 
 /**
- * sig_handler - handles ^C signal interupt
- * @sig_handler: signal handler variable
+ * handle_signal - handles ^C signal interupt
+ * @handle_signal: signal handle parameter
  *
  * Return: void
  */
-void sig_handler(int sig_handler)
+void handle_signal(int handle_signal)
 {
-    (void) sig_handler;
+    (void) handle_signal;
     str_out("\n$ ");
 }
 
@@ -23,17 +23,17 @@ void sig_handler(int sig_handler)
 int main(int argc, char **argv, char **environment)
 {
     size_t cmd_mem = 0;
-    unsigned int interactive = 0, i;
+    unsigned int interactive_mode = 0, i;
     shell_t shell_vars = {NULL, NULL, NULL, 0, NULL, 0, NULL};
 
     UNUSED(argc);
 
     shell_vars.argv = argv;
     shell_vars.env_vars = env_copy(environment); // Replaced 'init_env' with 'env_copy'
-    signal(SIGINT, sig_handler);
+    signal(SIGINT, handle_signal);
     if (!isatty(STDIN_FILENO))
-        interactive = 1;
-    if (interactive == 0)
+        interactive_mode = 1;
+    if (interactive_mode == 0)
         str_out("$ ");
 
     while (getline(&(shell_vars.cmd_mem), &cmd_mem, stdin) != -1)
@@ -56,12 +56,12 @@ int main(int argc, char **argv, char **environment)
 
         free(shell_vars.cmd_mem);
         free(shell_vars.commands);
-        if (interactive == 0)
+        if (interactive_mode == 0)
             str_out("$ ");
         shell_vars.cmd_mem = NULL;
     }
 
-    if (interactive == 0)
+    if (interactive_mode == 0)
         str_out("\n");
     env_free(shell_vars.env_vars);
     free(shell_vars.cmd_mem);
