@@ -16,7 +16,7 @@ void print_error(shell_t *shell_vars, char *err_message)
     str_error(": ");
 
     /* Convert and print command count */
-    tokenCount = int_to_string(shell_vars->tokenCount); // Corrected function name
+    tokenCount = int_to_string(shell_vars->tokenCount);
     str_error(tokenCount);
     free(tokenCount);
     str_error(": ");
