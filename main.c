@@ -29,7 +29,7 @@ int main(int argc, char **argv, char **environment)
     UNUSED(argc);
 
     shell_vars.argv = argv;
-    shell_vars.env_vars = env_copy(environment); // Replaced 'init_env' with 'env_copy'
+    shell_vars.env_vars = env_copy(environment);
     signal(SIGINT, handle_signal);
     if (!isatty(STDIN_FILENO))
         interactive_mode = 1;
