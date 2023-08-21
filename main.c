@@ -20,7 +20,7 @@ void handle_signal(int handle_signal)
  *
  * Return: 0 or exit close_status, or ?
  */
-int main(int argc, char **argv, char **environment)
+int main(int argc, char **arg_arr, char **e_vars)
 {
     size_t cmd_mem = 0;
     unsigned int interactive_mode = 0, i;
@@ -28,8 +28,8 @@ int main(int argc, char **argv, char **environment)
 
     UNUSED(argc);
 
-    shell_vars.argv = argv;
-    shell_vars.env_vars = env_copy(environment);
+    shell_vars.argv = arg_arr;
+    shell_vars.env_vars = env_copy(e_vars);
     signal(SIGINT, handle_signal);
     if (!isatty(STDIN_FILENO))
         interactive_mode = 1;
