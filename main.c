@@ -24,7 +24,7 @@ int main(int argc, char **argv, char **environment)
 {
     size_t cmd_mem = 0;
     unsigned int interactive_mode = 0, i;
-    shell_t shell_vars = {NULL, NULL, NULL, 0, NULL, 0, NULL};
+    shell_t shell_vars = {NULL, NULL, NULL, 0, NULL, NULL, 0};
 
     UNUSED(argc);
 
