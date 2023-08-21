@@ -7,16 +7,19 @@
  *
  * Return: 1 if match, 0 if not
  */
-unsigned int is_a_match(char c, const char *str)
+unsigned int is_a_match(char y, const char *str)
 {
-    unsigned int i;
+    unsigned int i = 0;
 
-    for (i = 0; str[i] != '\0'; i++)
+    while (str[i] != '\0')
     {
-        if (c == str[i])
-            return (1);
+        if (y == str[i])
+            return 1;
+
+        i++;
     }
-    return (0);
+
+    return 0;
 }
 
 char *custom_strtok(char *str, const char *delim)
