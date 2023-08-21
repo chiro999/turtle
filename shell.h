@@ -15,7 +15,7 @@
 /**
  * struct shell_vars - Variables for the shell
  * @tokens: Command line arguments
- * @cmd_mem: Buffer for command
+ * @cmd_mem: Memory for command
  * @env_vars: Environment variables
  * @tokenCount: Count of tokens
  * @argv: Arguments at opening of shell
@@ -34,9 +34,9 @@ typedef struct shell_vars
 } shell_t;
 
 /**
- * struct embedded - Struct for the builtin functions
- * @name: Name of builtin command
- * @f: Function for corresponding builtin
+ * struct embedded - Embedded functions struct
+ * @name: embedded command
+ * @f: embedded function
  */
 typedef struct embedded
 {
