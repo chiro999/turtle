@@ -29,8 +29,8 @@ typedef struct shell_vars
     char **env_vars;
     size_t tokenCount;
     char **argv;
-    int close_status;
     char **commands;
+    int close_status;
 } shell_t;
 
 /**
